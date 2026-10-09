@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.portcullis.guard</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Library/Application Support/Portcullis/guard.sh</string>
+  </array>
+
+  <!-- Wakes only when /etc/hosts changes: no polling, no idle cost. -->
+  <key>WatchPaths</key>
+  <array>
+    <string>/etc/hosts</string>
+  </array>
+
+  <!-- Backstop in case a file watch is dropped. ~11ms of CPU, once an hour. -->
+  <key>StartInterval</key>
+  <integer>3600</integer>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StandardOutPath</key>
+  <string>/var/log/portcullis-guard.log</string>
+  <key>StandardErrorPath</key>
+  <string>/var/log/portcullis-guard.log</string>
+</dict>
+</plist>

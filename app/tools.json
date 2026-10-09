@@ -1,0 +1,67 @@
+{
+  "_comment": "Apps people reach for to get around a block. Blocking these domains stops them being downloaded or updated, and stops most of them working. Add your own in the app.",
+  "tools": [
+    {
+      "id": "tor",
+      "name": "Tor Browser",
+      "why": "Routes around DNS and hosts blocking entirely. The most common bypass.",
+      "domains": ["torproject.org", "www.torproject.org", "dist.torproject.org",
+                  "archive.torproject.org", "aus1.torproject.org", "aus2.torproject.org",
+                  "blog.torproject.org", "support.torproject.org", "forum.torproject.org",
+                  "gitlab.torproject.org", "deb.torproject.org", "bridges.torproject.org",
+                  "check.torproject.org", "torproject.net", "www.torproject.net", "tor.eff.org"],
+      "processes": ["Tor Browser", "firefox.real"],
+      "default": true
+    },
+    {
+      "id": "nordvpn",
+      "name": "NordVPN",
+      "why": "A VPN defeats DNS filtering on every device it runs on.",
+      "domains": ["nordvpn.com", "www.nordvpn.com", "downloads.nordcdn.com", "nordcdn.com"],
+      "processes": ["NordVPN"],
+      "default": false
+    },
+    {
+      "id": "expressvpn",
+      "name": "ExpressVPN",
+      "why": "A VPN defeats DNS filtering on every device it runs on.",
+      "domains": ["expressvpn.com", "www.expressvpn.com", "expressvpn.net", "www.expressvpn.net"],
+      "processes": ["ExpressVPN"],
+      "default": false
+    },
+    {
+      "id": "protonvpn",
+      "name": "Proton VPN",
+      "why": "A VPN defeats DNS filtering on every device it runs on.",
+      "domains": ["protonvpn.com", "www.protonvpn.com", "protonvpn.net", "account.protonvpn.com"],
+      "processes": ["ProtonVPN"],
+      "default": false
+    },
+    {
+      "id": "psiphon",
+      "name": "Psiphon",
+      "why": "Censorship-circumvention tool. Designed to get around exactly this kind of block.",
+      "domains": ["psiphon.ca", "www.psiphon.ca", "psiphon3.com", "www.psiphon3.com"],
+      "processes": ["Psiphon"],
+      "default": true
+    },
+    {
+      "id": "opera",
+      "name": "Opera browser",
+      "why": "Ships with a free built-in VPN, so it needs no separate install.",
+      "domains": ["opera.com", "www.opera.com", "download.opera.com", "net.geo.opera.com"],
+      "processes": ["Opera"],
+      "default": false
+    },
+    {
+      "id": "proxysites",
+      "name": "Web proxy sites",
+      "why": "Load any site through someone else's server, straight past a hosts file.",
+      "domains": ["croxyproxy.com", "www.croxyproxy.com", "croxyproxy.rocks", "proxysite.com",
+                  "www.proxysite.com", "hide.me", "www.hide.me", "kproxy.com", "www.kproxy.com",
+                  "4everproxy.com", "www.4everproxy.com", "blockaway.net", "plainproxies.com"],
+      "processes": [],
+      "default": true
+    }
+  ]
+}

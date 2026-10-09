@@ -1,0 +1,11 @@
+# Build output — the zips are attached to GitHub releases instead.
+Portcullis.app/
+Portcullis 2.app/
+Portcullis-Windows/
+*.zip
+# Raw captures before personal details were covered.
+guide/raw/
+# Drafts that aren't part of the release.
+reddit-post.md
+.DS_Store
+__pycache__/

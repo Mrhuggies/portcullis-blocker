@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portcullis — layered porn blocking you can't undo on a whim</title>
+<meta name="description" content="Free, open-source porn blocking for Mac, Windows, Android and iPhone. Four layers, a 48-hour wait to remove, no account, no tracking.">
+<style>
+  :root{
+    --bg:#0f1115; --panel:#161920; --line:#242934; --text:#e8eaef; --muted:#9aa3b2;
+    --accent:#d9a441; --ok:#6fae7e; --warn:#e0a415; --danger:#c76b6b;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font:16px/1.65 ui-sans-serif,-apple-system,"SF Pro Text",system-ui,sans-serif}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px}
+  a{color:#8cb6ff}
+  h1{font-size:clamp(30px,5.5vw,46px);line-height:1.1;letter-spacing:-.02em;margin:0 0 14px}
+  h2{font-size:clamp(21px,3.4vw,27px);margin:56px 0 14px;letter-spacing:-.01em}
+  h3{font-size:18px;margin:28px 0 8px}
+  p{margin:0 0 14px}
+  .lede{font-size:clamp(17px,2.4vw,20px);color:#c8cedb;margin-bottom:22px}
+  header{padding:72px 0 10px;border-bottom:1px solid var(--line)}
+  .tag{display:inline-block;font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:16px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 40px}
+  .btn{display:inline-block;background:var(--accent);color:#14161a;text-decoration:none;
+    font-weight:600;padding:13px 20px;border-radius:9px}
+  .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:16px 0}
+  .muted{color:var(--muted)}
+  .small{font-size:14px}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:15px}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:#1b1f28;font-weight:600}
+  code,kbd{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13.5px;
+    background:#1b1f28;border:1px solid var(--line);padding:1px 5px;border-radius:5px}
+  pre{background:#0b0d11;border:1px solid var(--line);border-radius:9px;padding:14px 16px;
+    overflow-x:auto;margin:12px 0}
+  pre code{background:none;border:0;padding:0;font-size:13.5px;line-height:1.55}
+  ul,ol{padding-left:22px}
+  li{margin:6px 0}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:18px 0}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .card h3{margin:0 0 6px;font-size:16px}
+  .card p{margin:0;font-size:14.5px;color:var(--muted)}
+  .note{border-left:3px solid var(--warn);background:#1e1b14;padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0}
+  .note.good{border-color:var(--ok);background:#131c16}
+  .note.bad{border-color:var(--danger);background:#1e1416}
+  footer{border-top:1px solid var(--line);margin-top:70px;padding:28px 0 60px;color:var(--muted);font-size:14px}
+  .steps{counter-reset:s;list-style:none;padding:0}
+  .steps>li{counter-increment:s;position:relative;padding-left:42px;margin:20px 0}
+  .steps>li::before{content:counter(s);position:absolute;left:0;top:1px;width:27px;height:27px;
+    border-radius:50%;background:var(--accent);color:#14161a;font-weight:700;font-size:14px;
+    display:grid;place-items:center}
+  svg{max-width:100%;height:auto}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="tag">Free · open source · no account</div>
+    <h1>Blocking that holds long enough for the urge to pass.</h1>
+    <p class="lede">Most blockers put one wall in your way. You built the wall, so you know
+      where the door is. Portcullis puts four in your way, across every device you own, and
+      makes taking them down take two days.</p>
+    <div class="cta">
+      <a class="btn" href="https://github.com/Mrhuggies/portcullis-blocker/releases/latest/download/Portcullis-Mac.zip">Download for Mac</a>
+      <a class="btn" href="https://github.com/Mrhuggies/portcullis-blocker/releases/latest/download/Portcullis-Windows.zip">Download for Windows</a>
+      <a class="btn ghost" href="guide.html">Setup guide</a>
+      <a class="btn ghost" href="#how">How it works</a>
+      <a class="btn ghost" href="#safe">Is it safe?</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<h2 id="how">Why one blocker isn't enough</h2>
+<p>Every blocker has a hole. A browser extension is removed with two clicks. A DNS filter is
+  switched off in settings. A hosts file is edited by anyone who can type <code>sudo</code>.
+  On its own, each one stops you for about forty seconds.</p>
+<p>Layering changes the arithmetic. To get through, you have to defeat all of them, each needing
+  a different trick, while a part of you is already arguing that this is stupid and you should stop.
+  That argument is the thing we're buying time against — <strong>most urges fade within about
+  twenty minutes if you don't act on them</strong>.</p>
+
+<svg viewBox="0 0 760 232" role="img" aria-label="Four layers: hosts file, browser policy, DNS, app blocker">
+  <defs><style>
+    .b{fill:#161920;stroke:#242934}
+    .t{fill:#e8eaef;font:600 14px ui-sans-serif,system-ui}
+    .s{fill:#9aa3b2;font:12px ui-sans-serif,system-ui}
+    .k{fill:#d9a441;font:700 11px ui-sans-serif,system-ui;letter-spacing:.06em}
+  </style></defs>
+  <rect class="b" x="8" y="8" width="178" height="120" rx="10"/>
+  <text class="k" x="24" y="32">LAYER 1</text>
+  <text class="t" x="24" y="56">Hosts file</text>
+  <text class="s" x="24" y="78">Every browser,</text>
+  <text class="s" x="24" y="95">every app</text>
+  <text class="s" x="24" y="115">Undo: admin + 48h</text>
+
+  <rect class="b" x="198" y="8" width="178" height="120" rx="10"/>
+  <text class="k" x="214" y="32">LAYER 2</text>
+  <text class="t" x="214" y="56">Browser policy</text>
+  <text class="s" x="214" y="78">Chrome and Edge</text>
+  <text class="s" x="214" y="95">can't be talked round</text>
+  <text class="s" x="214" y="115">Undo: admin password</text>
+
+  <rect class="b" x="388" y="8" width="178" height="120" rx="10"/>
+  <text class="k" x="404" y="32">LAYER 3</text>
+  <text class="t" x="404" y="56">DNS filter</text>
+  <text class="s" x="404" y="78">Phone and laptop,</text>
+  <text class="s" x="404" y="95">wi-fi and mobile data</text>
+  <text class="s" x="404" y="115">Undo: settings + PIN</text>
+
+  <rect class="b" x="578" y="8" width="174" height="120" rx="10"/>
+  <text class="k" x="594" y="32">LAYER 4</text>
+  <text class="t" x="594" y="56">App blocker</text>
+  <text class="s" x="594" y="78">Apps and browsers</text>
+  <text class="s" x="594" y="95">on the phone</text>
+  <text class="s" x="594" y="115">Undo: strict mode</text>
+
+  <rect x="8" y="152" width="744" height="56" rx="10" fill="#13181f" stroke="#242934"/>
+  <text class="t" x="28" y="178">The watchdog</text>
+  <text class="s" x="28" y="197">Checks the block is intact and puts it back if it isn't — within a second on Mac, five minutes on Windows.</text>
+</svg>
+
+<h2>What each layer actually does</h2>
+<table>
+  <tr><th>Layer</th><th>Covers</th><th>Getting past it</th></tr>
+  <tr><td><strong>Hosts file</strong><br><span class="small muted">76,000+ adult domains</span></td>
+      <td>Every browser and every app on the computer — Safari, Chrome, Firefox, anything</td>
+      <td>Admin password, then a 48-hour wait</td></tr>
+  <tr><td><strong>Browser policy</strong><br><span class="small muted">Top 1,000 by traffic</span></td>
+      <td>Chrome and Edge, including private windows</td>
+      <td>Admin password</td></tr>
+  <tr><td><strong>DNS filter</strong><br><span class="small muted">NextDNS, free tier</span></td>
+      <td>Phone and laptop, on wi-fi and mobile data</td>
+      <td>Device settings, or a PIN someone else holds</td></tr>
+  <tr><td><strong>App blocker</strong><br><span class="small muted">AppBlock strict mode</span></td>
+      <td>Apps and browsers on the phone</td>
+      <td>Strict mode: PIN, charger, or a cooldown</td></tr>
+</table>
+
+<div class="note">
+  <strong>The honest version:</strong> none of this is unbreakable, and anyone who tells you
+  their blocker is unbreakable is selling something. You own the machine; with enough
+  determination you will get through. The point is that every route takes several deliberate
+  steps and a wait, and urges don't survive that.
+</div>
+
+<h2 id="install">Install it</h2>
+<p><a href="guide.html"><strong>Step-by-step guide with screenshots →</strong></a> every screen you'll see, for Mac,
+  Windows, Android and iPhone.</p>
+<p class="muted">Start with the computer you use most. Each part works on its own, so you can
+  stop after one layer and still be better off than before.</p>
+
+<h3>macOS</h3>
+<p><strong>The easy way:</strong> <a href="https://github.com/Mrhuggies/portcullis-blocker/releases/latest/download/Portcullis-Mac.zip">download Portcullis for Mac</a>, unzip it, drag
+  <code>Portcullis</code> into Applications and open it. The first time,
+  macOS will refuse because it isn't from the App Store: go to System&nbsp;Settings →
+  Privacy&nbsp;&amp;&nbsp;Security, scroll down and click <em>Open Anyway</em>. Then press
+  <em>Turn on</em>. The app installs the block list and watchdog, and lets you add your own
+  sites and block bypass tools like Tor. The steps below do the same thing by hand.</p>
+<ol class="steps">
+  <li><strong><a href="https://github.com/Mrhuggies/portcullis-blocker/archive/refs/heads/main.zip">Download the project</a> and unzip it</strong>,
+      then open Terminal in that folder.</li>
+  <li><strong>Block it everywhere:</strong><pre><code>sudo bash mac/install-hosts.sh</code></pre>
+      Covers Safari, Chrome, Firefox and every app. Asks for your Mac password — nothing appears
+      while you type it, which is normal.</li>
+  <li><strong>Lock Chrome's settings:</strong> double-click <code>mac/Portcullis.mobileconfig</code>,
+      then approve it in System&nbsp;Settings → General → Device&nbsp;Management.</li>
+  <li><strong>Turn on the watchdog</strong> so the block repairs itself:
+      <pre><code>sudo bash mac/install-guard.sh</code></pre></li>
+  <li><strong>Check it:</strong> <code>sudo bash mac/test-guard.sh</code> removes the block and
+      shows you it coming back. If the watchdog fails, the test puts it back itself.</li>
+</ol>
+
+<h3>Windows</h3>
+<div class="note">
+  <strong>Status:</strong> the file handling is covered by automated tests, and every script is
+  checked by Microsoft's own PowerShell parser; the app's rules and its security checks are tested
+  the same way as the Mac version's. The Windows-only parts — the permission prompt, registry
+  policy and the scheduled task — have not yet been run on a real Windows machine. Your hosts file is backed up
+  before anything is written, and <code>uninstall.ps1</code> restores it.
+</div>
+<p><strong>The easy way:</strong> <a href="https://github.com/Mrhuggies/portcullis-blocker/releases/latest/download/Portcullis-Windows.zip">download Portcullis for Windows</a>, unzip it somewhere
+  permanent such as Documents, and double-click <code>Portcullis.cmd</code>. If Windows says it
+  protected your PC, choose <em>More info → Run anyway</em>. Press <em>Turn on</em> and say yes to
+  the permission prompt. The app sets up the block list, the watchdog and the Chrome/Edge lock in
+  one go, and lets you add your own sites. Or by hand:</p>
+<ol class="steps">
+  <li><strong><a href="https://github.com/Mrhuggies/portcullis-blocker/archive/refs/heads/main.zip">Download the project</a> and unzip it</strong>, then
+      open PowerShell <em>as Administrator</em> in that folder.</li>
+  <li><strong>Block it everywhere:</strong><pre><code>powershell -ExecutionPolicy Bypass -File .\windows\install.ps1</code></pre>
+      Writes the hosts file and locks Chrome and Edge policy, including turning off the browsers'
+      own secure DNS so they can't resolve around the block.</li>
+  <li><strong>Turn on the watchdog:</strong><pre><code>powershell -ExecutionPolicy Bypass -File .\windows\install-guard.ps1</code></pre>
+      Registers a task that checks every five minutes and repairs the block.</li>
+  <li><strong>Restart Chrome and Edge completely</strong> and try a blocked site.</li>
+</ol>
+
+<h3>Phone — both platforms</h3>
+<p>DNS filtering covers every app on the phone, on wi-fi and on mobile data. It's free.</p>
+<ol class="steps">
+  <li><strong>Make your own NextDNS account</strong> at
+      <a href="https://nextdns.io">nextdns.io</a>. Free covers 300,000 lookups a month, which is
+      plenty for one phone. <strong>Use your own account</strong> — never someone else's ID, or
+      your browsing is recorded in their dashboard.</li>
+  <li><strong>Parental Control → Categories → add Porn.</strong> Not the Privacy tab; that's only
+      ads and trackers. Add any sites you personally want gone under
+      <em>Websites, Apps &amp; Games</em>.</li>
+  <li><strong>Settings → Logs:</strong> turn logging off or set the shortest retention, unless you
+      want the record.</li>
+  <li><strong>Android:</strong> Settings → Network &amp; internet → Private DNS → enter
+      <code>yourid.dns.nextdns.io</code>.<br>
+      <strong>iPhone:</strong> go to <code>apple.nextdns.io</code> in Safari, pick your profile,
+      tap Download, then Settings → Profile&nbsp;Downloaded → Install.</li>
+</ol>
+
+<h3>AppBlock — the strongest phone layer</h3>
+<p>DNS filtering stops sites. It can't stop an app. <a href="https://appblock.app">AppBlock</a>
+  adds that, and its <strong>Strict Mode</strong> is the part that matters: once on, you can't edit
+  your blocks, pause them, or uninstall the app until you satisfy whatever unlock you chose — a PIN,
+  plugging in a charger, a timer, or a cooldown.</p>
+<div class="grid">
+  <div class="card"><h3>Android</h3><p>Uses device-admin permission to prevent uninstall, and can
+    block access to device settings. This is the stronger of the two implementations.</p></div>
+  <div class="card"><h3>iPhone</h3><p>Has "Disable App Uninstalling", but some users report it
+    being bypassed via Screen Time. Treat it as friction, not a lock.</p></div>
+</div>
+<p class="small muted">Set the unlock to a cooldown of several minutes rather than a PIN you know.
+  A PIN you can remember is not an obstacle at 1am.</p>
+
+<h2 id="safe">Is it safe? What is it actually doing?</h2>
+<p>Fair question, and you shouldn't take anyone's word for it — including mine. Here's exactly
+  what it touches and how to check.</p>
+
+<div class="note good">
+  <strong>No account. No sign-up. No telemetry. Nothing is sent anywhere.</strong>
+  The scripts are plain text you can read in a few minutes. The only network request in the whole
+  project downloads a public blocklist from GitHub.
+</div>
+
+<table>
+  <tr><th>What it changes</th><th>Why</th><th>How to check</th></tr>
+  <tr><td>Your <code>hosts</code> file</td><td>Points blocked domains at nothing</td>
+      <td>It's a text file. Everything is between two marker comments; your own entries are left alone and backed up first.</td></tr>
+  <tr><td>Chrome/Edge policy</td><td>Blocks the top 1,000 sites, turns off browser DNS</td>
+      <td>Open <code>chrome://policy</code> and read every value it has set.</td></tr>
+  <tr><td>A background task</td><td>Puts the block back if it's removed</td>
+      <td>One small script, <code>guard.sh</code> or <code>guard.ps1</code>. It writes a log of everything it does.</td></tr>
+</table>
+
+<h3>What it does <em>not</em> do</h3>
+<ul>
+  <li>No record of what you browse. It can't see your browsing; it only knows a blocked name was asked for.</li>
+  <li>Nothing is uploaded, and there is no server. It keeps working with the wi-fi off.</li>
+  <li>No hidden master password or backdoor. The removal path is documented below, and it's the only one.</li>
+</ul>
+
+<h3>The one real privacy trade-off</h3>
+<p>If you use the DNS layer, <strong>NextDNS sees the domains your devices look up.</strong> That
+  is how filtering works — something has to answer the question. They're a paid-subscription
+  business rather than an ad one, logging is optional and you choose the retention, but it is a
+  genuine trade and you should make it knowingly. Skip that layer if you'd rather not; the rest
+  still works.</p>
+
+<h2>How to remove it</h2>
+<p>Documented on purpose. A tool that hides its own exit isn't trustworthy, and you'll
+  legitimately need this one day — a new laptop, a work machine, a changed mind.</p>
+<pre><code>macOS:    sudo bash mac/uninstall-hosts.sh     # files the request
+          sudo bash mac/uninstall-hosts.sh     # again after 48 hours
+Windows:  powershell -ExecutionPolicy Bypass -File .\windows\uninstall.ps1       # same two steps
+          powershell -ExecutionPolicy Bypass -File .\app\windows\uninstall.ps1   # (from the app's folder)</code></pre>
+<p>The first run doesn't remove anything — it starts a 48-hour clock and tells you when you can
+  come back. <code>--cancel</code> (or <code>-Cancel</code>) calls it off. Browser policy is removed
+  separately in System&nbsp;Settings or the registry, and the phone layers come off in their own apps.</p>
+<p class="small muted">If a site you need is blocked by mistake, don't remove everything —
+  <code>sudo bash mac/allow-site.sh example.com</code> unblocks exactly one. Instantly for ordinary
+  false positives; after an hour for anything on the adult list.</p>
+
+<h2>What it can't reach</h2>
+<ul>
+  <li><strong>Other devices</strong> — a tablet, a work laptop, a console. Each needs its own setup.</li>
+  <li><strong>VPNs</strong> — a VPN app doesn't defeat the hosts file, but it does defeat DNS filtering.</li>
+  <li><strong>Content inside big platforms</strong> — Reddit, X and Telegram serve it from the same
+      address as everything else. Blocking the whole site is the only lever.</li>
+  <li><strong>You, if you're determined enough.</strong> It's your computer and your password.
+      This buys you twenty minutes and a cooling-off period, not impossibility.</li>
+</ul>
+
+<div class="note">
+  <strong>The layer that actually changes the ceiling isn't software.</strong> It's another person:
+  someone who holds the Screen Time passcode, or just someone who knows you're doing this and asks
+  how it's going. Every technical layer here is friction. A person is accountability.
+</div>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>Portcullis is free and open source. Read the code before you run it — all of it is plain
+      text, and that's rather the point.</p>
+    <p class="small"><a href="https://github.com/Mrhuggies/portcullis-blocker">Source code on GitHub</a> ·
+      Blocklist from <a href="https://github.com/StevenBlack/hosts">StevenBlack/hosts</a>
+      (porn-only variant), rebuilt monthly. Not affiliated with NextDNS or AppBlock.</p>
+    <p class="small">If you're struggling, a therapist who works with compulsive sexual behaviour
+      can help more than any blocker. Software buys you twenty minutes; it doesn't do the rest.</p>
+  </div>
+</footer>
+
+</body>
+</html>

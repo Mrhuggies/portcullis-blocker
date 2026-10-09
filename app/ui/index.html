@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portcullis</title>
+<style>
+  :root{--bg:#0f1115;--panel:#161920;--panel2:#1b1f27;--line:#252a35;--text:#e8eaef;--muted:#9aa3b2;
+        --dim:#6b7383;--accent:#d9a441;--ok:#6fae7e;--bad:#c76b6b;color-scheme:dark}
+  *{box-sizing:border-box;margin:0;padding:0}
+  [hidden]{display:none !important}
+  body{background:var(--bg);color:var(--text);font:15px/1.55 -apple-system,"SF Pro Text",system-ui,sans-serif;
+       -webkit-font-smoothing:antialiased}
+  .wrap{max-width:700px;margin:0 auto;padding:30px 22px 130px}
+  button{font:inherit;color:inherit;cursor:pointer}
+  button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  h1{font-size:24px;letter-spacing:-.01em}
+  .top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px}
+  .top .small{color:var(--dim)}
+  .small{font-size:12.5px;color:var(--muted)}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13.5px;word-break:break-all}
+
+  /* status */
+  .status{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 18px;margin-bottom:14px}
+  .layer{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .layer:last-child{border-bottom:0}
+  .dot{width:10px;height:10px;border-radius:50%;background:var(--dim);flex:none}
+  .dot.on{background:var(--ok);box-shadow:0 0 0 4px rgba(111,174,126,.14)}
+  .dot.off{background:var(--bad)}
+  .layer b{font-weight:600}
+  .layer .grow{flex:1;min-width:0}
+  details.layer{display:block;margin:0;padding:0}
+  details.layer>summary{display:flex;align-items:center;gap:13px;padding:12px 0;list-style:none;color:inherit;font-size:inherit}
+  details.layer>summary::-webkit-details-marker{display:none}
+  .why{font-size:12px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:2px 9px;white-space:nowrap}
+  details.layer[open] .why{color:var(--text);border-color:var(--dim)}
+  details[open]>summary .why::after{content:" ▴"} details:not([open])>summary .why::after{content:" ▾"}
+  .explain{font-size:13.5px;color:#c3c9d4;padding:0 0 14px 23px}
+  .explain p+p{margin-top:7px}
+  .explain b{color:var(--text);font-weight:600}
+  .info{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:2px 18px;margin-bottom:12px}
+  .info>summary{display:flex;align-items:center;gap:10px;padding:11px 0;color:var(--muted);font-size:13.5px;list-style:none}
+  .info>summary::-webkit-details-marker{display:none}
+  .info .explain{padding-left:0}
+  .blocks{font-size:12px;color:var(--dim);margin-top:3px}
+  .task{display:flex;gap:13px;align-items:flex-start}
+  .task .dot{margin-top:7px}
+  .task h3{font-size:15px;font-weight:600;margin-bottom:2px}
+  .steps{counter-reset:s;list-style:none;margin:14px 0 4px}
+  .steps li{counter-increment:s;position:relative;padding:0 0 14px 34px;font-size:13.5px;color:#c3c9d4}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:0;width:23px;height:23px;border-radius:50%;
+    background:var(--accent);color:#14161a;font-weight:700;font-size:12.5px;text-align:center;line-height:23px}
+  .steps img{display:block;max-width:100%;max-height:260px;margin:8px 0 2px;border-radius:8px;border:1px solid var(--line)}
+  .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  a.ghost{text-decoration:none;display:inline-block}
+  nav button .badge{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);
+    margin-left:6px;vertical-align:2px}
+
+  /* banner */
+  .banner{display:flex;align-items:center;gap:14px;border-radius:12px;padding:14px 16px;margin-bottom:22px;
+          background:var(--panel2);border:1px solid var(--line)}
+  .banner.attn{border-color:rgba(217,164,65,.55);background:#1f1b12}
+  .banner.bad{border-color:rgba(199,107,107,.55);background:#211517}
+  .banner .grow{flex:1}
+
+  nav{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:20px}
+  nav button{background:none;border:0;color:var(--muted);padding:10px 13px;border-bottom:2px solid transparent;margin-bottom:-1px}
+  nav button[aria-selected=true]{color:var(--text);border-bottom-color:var(--accent)}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px 18px;margin-bottom:12px}
+  .card.pad{padding:16px 18px}
+  .row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:0}
+  .row .grow{flex:1;min-width:0}
+  .empty{color:var(--muted);font-size:14px;padding:14px 0}
+  .wait{color:var(--accent);font-size:12.5px;font-variant-numeric:tabular-nums}
+
+  input[type=text],input[type=number]{background:#0b0d11;border:1px solid var(--line);border-radius:9px;
+    color:var(--text);padding:10px 12px;font:inherit;width:100%}
+  .form{display:flex;gap:9px}
+  .btn{background:var(--accent);color:#14161a;border:0;border-radius:9px;font-weight:600;padding:10px 16px;white-space:nowrap}
+  .btn:disabled{opacity:.4;cursor:default}
+  .ghost{background:none;border:1px solid var(--line);color:var(--muted);border-radius:9px;padding:7px 12px;white-space:nowrap}
+  .ghost:hover{color:var(--text);border-color:var(--dim)}
+  .ghost.warn{color:var(--accent);border-color:rgba(217,164,65,.45)}
+  h2{font-size:12.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:24px 0 9px;font-weight:600}
+
+  .switch{width:44px;height:25px;border-radius:999px;background:#2a2f39;border:0;position:relative;flex:none}
+  .switch[aria-checked=true]{background:var(--accent)}
+  .switch::after{content:"";position:absolute;top:3px;left:3px;width:19px;height:19px;border-radius:50%;
+    background:#fff;transition:transform .15s}
+  .switch[aria-checked=true]::after{transform:translateX(19px)}
+  .switch.pending{background:#6a5226}
+
+  .note{border-left:3px solid var(--accent);background:#1c1913;padding:11px 14px;border-radius:0 9px 9px 0;
+        font-size:13.5px;color:#d7cfbd;margin:12px 0}
+  details{margin-top:6px}
+  summary{cursor:pointer;color:var(--muted);font-size:13.5px;padding:6px 0}
+  details p{font-size:13.5px;color:#c3c9d4;margin:8px 0}
+
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;
+    background:#232833;border:1px solid var(--line);color:var(--text);padding:11px 16px;border-radius:10px;
+    font-size:14px;transition:.2s;pointer-events:none;max-width:90vw}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast.err{border-color:rgba(199,107,107,.6)}
+  .fatal{text-align:center;padding:80px 20px;color:var(--muted)}
+  .fatal b{display:block;color:var(--text);font-size:18px;margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="wrap" id="app" hidden>
+  <div class="top"><h1>Portcullis</h1><span class="small" id="where">runs on this computer only</span></div>
+
+  <div class="status" aria-label="What's protecting you">
+    <details class="layer"><summary><span class="dot" id="dHosts"></span>
+      <div class="grow"><b>Block list</b><div class="small" id="tHosts"></div></div>
+      <span class="why">What it does</span></summary>
+      <div class="explain">
+        <p><b>The main layer.</b> Before your computer visits any website it checks a file called
+          <span class="mono">hosts</span> — a local address book. Portcullis writes every blocked site
+          into it pointing at nowhere, so they can't load in <b>any browser or app</b>, including
+          private windows.</p>
+        <p>It holds a public list of about 77,000 adult sites (from the open-source StevenBlack
+          project), plus everything on your list and every bypass tool you've switched on.</p>
+        <p>It works on whole sites by name, on this <span class="place">computer</span>. It can't see
+          what's inside a site like Reddit or X, and your phone needs its own setup.</p>
+      </div></details>
+    <details class="layer"><summary><span class="dot" id="dGuard"></span>
+      <div class="grow"><b>Watchdog</b><div class="small" id="tGuard"></div></div>
+      <span class="why">What it does</span></summary>
+      <div class="explain">
+        <p><b>Keeps the block list in place.</b> A small background job that checks the list is
+          still there and puts it back if anything removes or edits it.
+          <span data-mac>It wakes the moment the hosts file changes, and once an hour anyway.</span><span
+          data-win>It checks every five minutes and whenever the PC starts.</span></p>
+        <p>It runs with system rights, so quitting this panel or deleting the app doesn't stop it.
+          It only stands aside once a removal request has waited out its 48 hours.</p>
+      </div></details>
+    <details class="layer"><summary><span class="dot" id="dChrome"></span>
+      <div class="grow"><b id="lChrome">Chrome lock</b><div class="small" id="tChrome"></div></div>
+      <span class="why">What it does</span></summary>
+      <div class="explain">
+        <p><b>Rules the browser has to obey.</b> <span data-mac>Chrome</span><span data-win>Chrome
+          and Edge</span> can look websites up in their own way ("secure DNS"), which skips the
+          hosts file. This switches that off, so the block list always applies.</p>
+        <p>It also blocks the 1,000 biggest adult sites inside the browser itself, as a second
+          line if the block list were ever missing.</p>
+        <p data-mac>On a Mac this is a profile you install once, from the guide — the panel can't
+          install it for you.</p>
+        <p data-win>Set the first time you press Turn on. The browsers will then say they're "managed by
+          your organization" — that's this, and it's expected.</p>
+      </div></details>
+  </div>
+
+  <div class="banner" id="banner" role="status">
+    <div class="grow"><b id="bTitle"></b><div class="small" id="bText"></div></div>
+    <button class="btn" id="apply" type="button">Apply</button>
+  </div>
+
+  <nav role="tablist">
+    <button role="tab" aria-selected="true" data-tab="sites" type="button">Websites &amp; apps</button>
+    <button role="tab" aria-selected="false" data-tab="tools" type="button">Bypass tools</button>
+    <button role="tab" aria-selected="false" data-tab="setup" type="button">Set up<span class="badge" id="setupBadge" hidden></span></button>
+    <button role="tab" aria-selected="false" data-tab="settings" type="button">Settings</button>
+  </nav>
+
+  <section id="tab-sites" role="tabpanel">
+    <div class="card pad">
+      <form class="form" id="addForm">
+        <input type="text" id="site" placeholder="e.g. reddit.com" autocomplete="off" spellcheck="false"
+               aria-label="Website to block">
+        <button class="btn" type="submit">Block</button>
+      </form>
+      <div class="small" style="margin-top:9px">Adding is instant. Taking one off waits
+        <span id="waitLabel">48 hours</span>. To block an app, add the site it downloads from.</div>
+    </div>
+    <h2>Your list</h2>
+    <div class="card" id="sites"></div>
+    <details class="info"><summary><span class="grow">What does adding a site block?</span><span class="why">More</span></summary>
+      <div class="explain">
+        <p>The site itself plus its <span class="mono">www.</span> and <span class="mono">m.</span>
+          (mobile) addresses — so <span class="mono">example.com</span> blocks
+          <span class="mono">example.com</span>, <span class="mono">www.example.com</span> and
+          <span class="mono">m.example.com</span>.</p>
+        <p>Other parts of a site aren't covered automatically. If something like
+          <span class="mono">video.example.com</span> still loads, add that too.</p>
+        <p>To block an app, add the website it downloads and updates from. That stops it being
+          installed, and usually stops it working.</p>
+      </div></details>
+    <p class="small">The adult block list (about 77,000 sites) is always included and isn't shown here.</p>
+    <p class="small" id="keptNote" hidden style="margin-top:6px"></p>
+  </section>
+
+  <section id="tab-tools" role="tabpanel" hidden>
+    <p class="small" style="margin-bottom:12px">Apps people reach for to get around a block. Switching one
+      on blocks where it downloads and updates from. Switching one off waits, like everything else.</p>
+    <div class="card" id="tools"></div>
+    <div class="note"><b>Tor is the exception.</b> Once installed it routes around the block entirely —
+      this stops it being downloaded, so if it's already on this computer, delete it as well.</div>
+  </section>
+
+  <section id="tab-setup" role="tabpanel" hidden>
+    <p class="small" style="margin-bottom:12px">Everything you have to do yourself, with pictures of each screen.
+      The full guide opens in a new tab and can be shared.</p>
+
+    <div class="card pad"><div class="task"><span class="dot" id="sHosts"></span><div class="grow">
+      <h3>Block list on this <span class="place">computer</span></h3>
+      <div class="small" id="sHostsText"></div></div></div></div>
+
+    <div class="card pad"><div class="task"><span class="dot" id="sChrome"></span><div class="grow">
+      <h3 id="sChromeTitle">Chrome lock</h3>
+      <div class="small" id="sChromeText"></div>
+      <div data-mac id="profileSteps">
+        <div class="links"><button class="btn" id="openProfile" type="button">Install the Chrome lock</button></div>
+        <ol class="steps">
+          <li>macOS says the profile has downloaded. Click <b>OK</b>.
+            <img src="/img/mac-profile-downloaded.png" alt="" style="max-height:150px"></li>
+          <li>System Settings opens at <b>Device Management</b>. Double-click <b>Portcullis</b>.
+            <img src="/img/mac-profile-pending.png" alt=""></li>
+          <li>Click <b>Install…</b>, then enter your Mac password.
+            <img src="/img/mac-profile-review.png" alt=""></li>
+          <li>Quit Chrome fully (⌘Q) and reopen it. The light above turns green on its own.</li>
+        </ol></div>
+      <div class="links" data-win><a class="ghost" href="/guide.html#windows" target="_blank" rel="noopener">How to check it</a></div>
+    </div></div></div>
+
+    <div class="card pad"><div class="task"><span class="dot"></span><div class="grow">
+      <h3>Your phone</h3>
+      <div class="small">This app can't reach your phone. A free service called NextDNS blocks the same sites
+        there, in every app. About ten minutes.</div>
+      <div class="links">
+        <a class="ghost" href="/guide.html#iphone" target="_blank" rel="noopener">iPhone guide</a>
+        <a class="ghost" href="/guide.html#android" target="_blank" rel="noopener">Android guide</a></div>
+    </div></div></div>
+
+    <div class="card pad"><div class="task"><span class="dot"></span><div class="grow">
+      <h3>Everything else</h3>
+      <div class="small">Installing on another computer, and how removal works.</div>
+      <div class="links">
+        <a class="ghost" href="/guide.html" target="_blank" rel="noopener">Open the full guide</a>
+        <a class="ghost" href="/guide.html#remove" target="_blank" rel="noopener">Removing it</a></div>
+    </div></div></div>
+  </section>
+
+  <section id="tab-settings" role="tabpanel" hidden>
+    <div class="card pad">
+      <div class="row" style="padding-top:0">
+        <div class="grow"><b>Waiting period</b>
+          <div class="small">How long before anything can come off. Raising it applies now; lowering it
+            has to wait out the current period.</div>
+          <div class="wait" id="waitPending"></div></div>
+        <input type="number" id="wait" min="1" max="720" style="max-width:84px" aria-label="Hours">
+        <button class="btn" id="saveWait" type="button">Save</button>
+      </div>
+    </div>
+    <div class="card pad">
+      <b>How this works</b>
+      <details><summary>What happens when I press Apply?</summary>
+        <p>The panel builds your list and asks <span data-mac>macOS for your password</span><span data-win>Windows
+          for permission</span>. A small script then checks the
+          list contains nothing but blocks — it will refuse anything else — and writes it into your
+          system's hosts file, which every browser and app obeys.</p></details>
+      <details><summary>What does the watchdog do?</summary>
+        <p>It runs in the background and puts the block back <span data-mac>within a second</span><span
+          data-win>within five minutes</span> if anything removes it.
+          It's installed the first time you press Apply.</p></details>
+      <details><summary>What if I delete this app?</summary>
+        <p>The blocks stay. This app is only the control panel — the block list and watchdog live in
+          the system, so deleting it removes your ability to change things, not the protection.</p></details>
+      <details><summary>How do I remove it completely?</summary>
+        <p>Deliberately not a button. <span data-mac>In Terminal:
+          <span class="mono">sudo bash /Applications/Portcullis.app/Contents/Resources/mac/uninstall-hosts.sh</span></span><span
+          data-win>In PowerShell run as administrator, from the Portcullis folder:
+          <span class="mono">powershell -ExecutionPolicy Bypass -File .\app\windows\uninstall.ps1</span></span>,
+          once to ask and again 48 hours later. <a href="/guide.html#remove" target="_blank" rel="noopener">Step by
+          step, with pictures</a>. It's documented because a tool that hides its own
+          exit isn't trustworthy.</p></details>
+      <details><summary>Does anything leave my computer?</summary>
+        <p>No. The panel only answers this computer, there's no account, and nothing is sent anywhere.</p></details>
+    </div>
+    <button class="ghost" id="quit" type="button">Quit the panel</button>
+  </section>
+</div>
+
+<div class="fatal" id="fatal" hidden><b id="fTitle"></b><span id="fText"></span></div>
+<div class="toast" id="toast" role="alert"></div>
+
+<script>
+const TOKEN = "__PORTCULLIS_TOKEN__";
+const $ = s => document.querySelector(s);
+let S = null, busy = false;
+
+async function api(body){
+  const opts = { headers:{ "X-Portcullis-Token": TOKEN } };
+  if (body){ opts.method = "POST"; opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
+  let r;
+  try { r = await fetch(body ? "/api/action" : "/api/state", opts); }
+  catch { return fatal("The panel isn't running", "Open Portcullis.app to start it again."); }
+  if (r.status === 403) return fatal("The panel was restarted", "Reload this page to reconnect.");
+  return r.json();
+}
+
+function fatal(title, text){
+  $("#app").hidden = true; $("#fatal").hidden = false;
+  $("#fTitle").textContent = title; $("#fText").textContent = text;
+  return null;
+}
+
+let toastTimer;
+function toast(text, err){
+  const t = $("#toast"); t.textContent = text; t.className = "toast show" + (err ? " err" : "");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.className = "toast", err ? 5000 : 2600);
+}
+
+function left(at){
+  const s = Math.max(0, at - Date.now()/1000);
+  if (s < 60) return `${Math.ceil(s)}s`;
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60);
+  return h ? `${h}h ${String(m).padStart(2,"0")}m` : `${m}m`;
+}
+
+function el(tag, attrs = {}, text){
+  const n = document.createElement(tag);
+  for (const [k,v] of Object.entries(attrs)) k === "class" ? n.className = v : n.setAttribute(k, v);
+  if (text != null) n.textContent = text;
+  return n;
+}
+
+function countdown(at, before, after = ""){
+  const wrap = el("div", {class:"wait"});
+  wrap.append(before, el("span", {"data-at": at}, left(at)), after);
+  return wrap;
+}
+
+let WIN = false, PLACE = "computer";
+function setPlatform(win){
+  // One page serves both versions; only the wording differs.
+  WIN = win; PLACE = win ? "PC" : "Mac";
+  $("#where").textContent = `runs on this ${PLACE} only`;
+  $("#lChrome").textContent = win ? "Chrome & Edge lock" : "Chrome lock";
+  document.querySelectorAll(".place").forEach(e => e.textContent = PLACE);
+  document.querySelectorAll("[data-mac]").forEach(e => e.hidden = win);
+  document.querySelectorAll("[data-win]").forEach(e => e.hidden = !win);
+}
+function setDot(id, on){ $(id).className = "dot " + (on === null ? "" : on ? "on" : "off"); }
+
+function render(){
+  if (!S) return;
+  const st = S.status, d = S.state;
+  $("#app").hidden = false; $("#fatal").hidden = true;
+  setPlatform(st.os === "windows");
+
+  setDot("#dHosts", st.installed);
+  $("#tHosts").textContent = st.installed
+    ? `${st.count.toLocaleString()} sites blocked in every browser and app` : "Not switched on yet";
+  setDot("#dGuard", st.guard);
+  $("#tGuard").textContent = st.guard ? "Puts the block back if anything removes it" : "Installed when you first apply";
+  setDot("#dChrome", st.chromeProfile ? true : null);
+  $("#tChrome").textContent = st.chromeProfile
+    ? (WIN ? "Chrome and Edge can't switch the block off" : "Chrome's settings are locked")
+    : (WIN ? "Set the first time you apply" : "Optional — see the guide");
+
+  const b = $("#banner"), ap = $("#apply");
+  if (st.corrupt){
+    b.className = "banner bad"; $("#bTitle").textContent = "Your saved settings were damaged";
+    $("#bText").textContent = "A copy was kept. Nothing will be applied until this is sorted.";
+    ap.hidden = true;
+  } else if (!st.installed){
+    b.className = "banner attn"; $("#bTitle").textContent = "Protection isn't on yet";
+    $("#bText").textContent = `Turn it on to block adult sites everywhere on this ${PLACE}. ${WIN ? "Windows will ask for permission." : "You'll be asked for your password."}`;
+    ap.hidden = false; ap.textContent = "Turn on"; ap.disabled = busy;
+  } else if (!st.upToDate){
+    const parts = [];
+    if (st.toAdd) parts.push(`${st.toAdd} to block`);
+    if (st.toRemove) parts.push(`${st.toRemove} to unblock`);
+    b.className = "banner attn"; $("#bTitle").textContent = "Changes waiting";
+    $("#bText").textContent = parts.join(" · ") + " — not in force until you apply.";
+    ap.hidden = false; ap.textContent = "Apply"; ap.disabled = busy;
+  } else {
+    b.className = "banner"; $("#bTitle").textContent = "Everything's in force";
+    $("#bText").textContent = `Your list matches what's blocked on this ${PLACE}.`;
+    ap.hidden = true;
+  }
+
+  // set-up checklist
+  setDot("#sHosts", st.installed);
+  $("#sHostsText").textContent = st.installed
+    ? "On. Every browser and app here is covered." : "Not on yet — press Turn on above.";
+  setDot("#sChrome", st.chromeProfile ? true : (WIN ? null : false));
+  $("#sChromeTitle").textContent = WIN ? "Chrome & Edge lock" : "Chrome lock";
+  $("#sChromeText").textContent = st.chromeProfile
+    ? (WIN ? "On. Set when you turned protection on." : "Installed. Chrome can't switch the block off.")
+    : (WIN ? "Set automatically the first time you press Turn on."
+           : "Stops Chrome skipping the block list. macOS needs you to approve it — about a minute.");
+  $("#profileSteps").hidden = WIN || !!st.chromeProfile;
+  $("#setupBadge").hidden = !(!st.installed || (!WIN && !st.chromeProfile));
+
+  $("#waitLabel").textContent = `${d.waitHours} hours`;
+  $("#keptNote").hidden = !st.kept;
+  $("#keptNote").textContent = st.kept
+    ? `${st.kept.toLocaleString()} blocks from an earlier setup are being kept. The app never removes anything that hasn't gone through the waiting period.`
+    : "";
+
+  // sites
+  const box = $("#sites"); box.replaceChildren();
+  const sites = [...d.sites].sort((a,b) => a.host.localeCompare(b.host));
+  if (!sites.length) box.append(el("div", {class:"empty"}, "Nothing added yet. Add anything you want gone — it takes effect when you apply."));
+  for (const s of sites){
+    const row = el("div", {class:"row"}), grow = el("div", {class:"grow"});
+    grow.append(el("div", {class:"mono"}, s.host));
+    const due = d.pending[s.host];
+    if (due) grow.append(countdown(due, "comes off in "));
+    row.append(grow);
+    const btn = el("button", {class: due ? "ghost warn" : "ghost", type:"button"}, due ? "Keep blocking" : "Remove");
+    btn.onclick = () => due ? send({action:"cancelRemoval", host:s.host})
+                            : confirmRemove(btn, s.host);
+    row.append(btn); box.append(row);
+  }
+
+  // tools
+  const tbox = $("#tools"); tbox.replaceChildren();
+  for (const t of S.catalogue){
+    const on = d.tools[t.id], due = d.pendingTools[t.id];
+    const row = el("div", {class:"row"}), grow = el("div", {class:"grow"});
+    grow.append(el("div", {}, t.name), el("div", {class:"small"}, t.why),
+                el("div", {class:"blocks"}, blocksLine(t.domains)));
+    if (due) grow.append(countdown(due, "switches off in ", " — tap to keep it on"));
+    const sw = el("button", {class:"switch" + (due ? " pending" : ""), role:"switch",
+                             "aria-checked": String(!!on), "aria-label": t.name, type:"button"});
+    sw.onclick = () => send({action:"setTool", id:t.id, on: due ? false : !on});
+    row.append(grow, sw); tbox.append(row);
+  }
+
+  // wait
+  if (document.activeElement !== $("#wait")) $("#wait").value = d.waitHours;
+  const pw = d.pendingWait;
+  $("#waitPending").replaceChildren(...(pw ? [countdown(pw.at, `Dropping to ${pw.hours}h in `)] : []));
+}
+
+function blocksLine(domains){
+  // Show the main address and how many related ones go with it.
+  const main = domains.find(d => !d.startsWith("www.")) || domains[0];
+  const more = domains.length - 1;
+  return `Blocks ${main}` + (more ? ` and ${more} related address${more === 1 ? "" : "es"}` : "");
+}
+
+function confirmRemove(btn, host){
+  if (btn.dataset.armed){ send({action:"requestRemoval", host}); return; }
+  btn.dataset.armed = "1"; btn.className = "ghost warn";
+  btn.textContent = `Start ${S.state.waitHours}h wait?`;
+  setTimeout(() => { if (btn.isConnected){ delete btn.dataset.armed; btn.className="ghost"; btn.textContent="Remove"; } }, 4000);
+}
+
+async function send(body){
+  const r = await api(body); if (!r) return;
+  if (r.state){ S.state = r.state; S.status = r.status; render(); }
+  if (r.ok) { if (r.message) toast(r.message); } else toast(r.error || "Something went wrong.", true);
+  return r;
+}
+
+$("#addForm").onsubmit = async e => {
+  e.preventDefault();
+  const v = $("#site").value.trim(); if (!v) return;
+  const r = await send({action:"addSite", host:v});
+  if (r && r.ok) $("#site").value = "";
+};
+
+$("#saveWait").onclick = () => send({action:"setWait", hours: Number($("#wait").value)});
+
+$("#apply").onclick = async () => {
+  busy = true; render();
+  $("#bTitle").textContent = WIN ? "Waiting for permission…" : "Waiting for your password…";
+  $("#bText").textContent = WIN ? "Windows is asking — if you don't see it, check the taskbar."
+                                : "macOS is asking in a separate window.";
+  const r = await send({action:"apply"});
+  busy = false; render();
+};
+
+$("#openProfile").onclick = async () => {
+  const b = $("#openProfile"); b.disabled = true;
+  await send({action:"openProfile"});
+  setTimeout(() => { b.disabled = false; }, 4000);
+};
+
+$("#quit").onclick = async () => {
+  await api({action:"quit"});
+  fatal("Panel closed", "Your blocks are still in force. Open Portcullis again to change them.");
+};
+
+document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
+  document.querySelectorAll("nav button").forEach(x => x.setAttribute("aria-selected", x === b));
+  ["sites","tools","setup","settings"].forEach(t => $("#tab-"+t).hidden = t !== b.dataset.tab);
+});
+
+// Countdowns tick every second from timestamps, without asking the server.
+setInterval(() => document.querySelectorAll("[data-at]").forEach(n => {
+  n.textContent = left(Number(n.dataset.at));
+}), 1000);
+
+(async () => {
+  S = await api(); render();
+  setInterval(async () => {
+    if (busy || document.querySelector("[data-armed]") || document.activeElement === $("#wait")) return;
+    const f = await api(); if (f){ S = f; render(); }
+  }, 8000);
+})();
+</script>
+</body>
+</html>

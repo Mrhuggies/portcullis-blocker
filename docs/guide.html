@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portcullis setup guide</title>
+<style>
+  :root{--bg:#0f1115;--panel:#161920;--line:#252a35;--text:#e8eaef;--muted:#9aa3b2;--dim:#6b7383;--accent:#d9a441;
+        --ok:#6fae7e;color-scheme:dark}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font:16px/1.6 -apple-system,"SF Pro Text",system-ui,"Segoe UI",sans-serif;
+       -webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:34px 18px 120px}
+  h1{font-size:30px;letter-spacing:-.01em;margin-bottom:6px}
+  h2{font-size:22px;margin:56px 0 6px;padding-top:12px;border-top:1px solid var(--line)}
+  h3{font-size:17px;margin:30px 0 8px;color:var(--accent)}
+  p{margin:8px 0;color:#d3d8e0}
+  .lead{color:var(--muted)}
+  a{color:#8fb8ff}
+  nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 4px}
+  nav.toc a{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 13px;color:var(--text);
+            text-decoration:none;font-size:14px}
+  ol.steps{list-style:none;counter-reset:s;margin:12px 0}
+  ol.steps>li{counter-increment:s;position:relative;padding:0 0 18px 44px}
+  ol.steps>li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;
+                      background:var(--accent);color:#14161a;font-weight:700;text-align:center;line-height:30px;font-size:15px}
+  figure{margin:12px 0 4px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;
+         text-align:center}
+  figure img{max-width:100%;height:auto;border-radius:8px;display:block;margin:0 auto}
+  figure.phone img{max-width:300px}
+  figure.small img{max-width:340px}
+  figcaption{font-size:13px;color:var(--muted);margin-top:8px}
+  figcaption .tag{display:inline-block;font-size:11px;border:1px solid var(--line);color:var(--dim);border-radius:999px;
+                  padding:0 7px;margin-right:6px;vertical-align:1px}
+  code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:13.5px;background:#0b0d11;
+       border:1px solid var(--line);border-radius:6px;padding:1px 6px;word-break:break-all}
+  pre{background:#0b0d11;border:1px solid var(--line);border-radius:9px;padding:11px 13px;margin:8px 0;overflow-x:auto}
+  pre code{border:0;padding:0;background:none}
+  .note{border-left:3px solid var(--accent);background:#1c1913;padding:11px 14px;border-radius:0 9px 9px 0;
+        font-size:15px;color:#d7cfbd;margin:12px 0}
+  .ok{border-left-color:var(--ok);background:#131b15;color:#cfe0d3}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:600px){.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Setting up Portcullis</h1>
+<p class="lead">Every step you have to do yourself, one screen at a time. Real screenshots where they could be taken;
+  screens from Windows and phones are drawn to match and labelled <em>Illustration</em>.</p>
+<nav class="toc">
+  <a href="#mac">Install on a Mac</a>
+  <a href="#chrome-mac">Lock Chrome (Mac)</a>
+  <a href="#windows">Install on Windows</a>
+  <a href="#phone">Your phone</a>
+  <a href="#android">Android</a>
+  <a href="#iphone">iPhone</a>
+  <a href="#remove">Removing it</a>
+</nav>
+
+<!-- ================================================================== Mac -->
+<h2 id="mac">Install on a Mac</h2>
+<ol class="steps">
+  <li><b>Unzip it and drag Portcullis into Applications.</b>
+    <p>Double-click the zip you were sent, then drag <code>Portcullis</code> into the Applications folder in Finder.</p></li>
+  <li><b>Open it. macOS will refuse the first time.</b>
+    <p>Portcullis isn't from the App Store, so macOS stops it and offers to bin it. Choose <b>Done</b>, not
+      Move to Bin.</p>
+    <figure class="small"><img src="img/mac-not-opened.png" alt="Portcullis Not Opened alert with the Done button highlighted">
+      <figcaption>Choose Done.</figcaption></figure></li>
+  <li><b>Allow it in System Settings.</b>
+    <p>Open <b>System Settings → Privacy &amp; Security</b>, scroll right to the bottom, and click
+      <b>Open Anyway</b>. Confirm with your Mac password. You only do this once.</p>
+    <figure><img src="img/mac-open-anyway.png" alt="Security section with the Open Anyway button highlighted">
+      <figcaption>Bottom of Privacy &amp; Security.</figcaption></figure></li>
+  <li><b>If asked, install the developer tools.</b>
+    <p>The panel runs on Python, which Apple ships as part of its free command line tools. If your Mac has never
+      had them, this box appears. Click <b>Install</b>, wait a few minutes for it to finish, then open Portcullis
+      again. Most Macs never see this.</p>
+    <figure class="small"><img src="img/mac-clt.png" alt="Install command line developer tools prompt">
+      <figcaption><span class="tag">Illustration</span>Click Install.</figcaption></figure></li>
+  <li><b>Press Turn on, and enter your password.</b>
+    <p>The panel opens in your browser. Press <b>Turn on</b>. macOS asks for your password — the box says
+      <i>osascript</i>, which is the part of macOS that Portcullis uses to ask.</p>
+    <figure class="small"><img src="img/mac-password.png" alt="Password prompt with password field and OK highlighted">
+      <figcaption>Type your Mac password, then OK.</figcaption></figure>
+    <div class="note ok">That's the block list and the watchdog on. Every browser and app on this Mac is now
+      covered.</div></li>
+</ol>
+
+<h2 id="chrome-mac">Lock Chrome (Mac)</h2>
+<p>Stops Chrome looking sites up its own way, which would skip the block, and blocks the biggest adult sites
+  inside Chrome too. macOS won't let any app install this on its own — you approve it.</p>
+<ol class="steps">
+  <li><b>In the panel, open <i>Set up</i> and press <i>Install the Chrome lock</i>.</b>
+    <p>macOS says the profile has downloaded. Click <b>OK</b>. (Without the panel: double-click
+      <code>Portcullis.mobileconfig</code>.)</p>
+    <figure class="small"><img src="img/mac-profile-downloaded.png" alt="Profile Downloaded alert">
+      <figcaption>Click OK.</figcaption></figure></li>
+  <li><b>Find it in System Settings.</b>
+    <p>The panel opens <b>System Settings → General → Device Management</b> for you. Double-click
+      <b>Portcullis</b> under Downloaded.</p>
+    <figure><img src="img/mac-profile-pending.png" alt="Device Management with the downloaded Portcullis profile">
+      <figcaption>Double-click Portcullis.</figcaption></figure></li>
+  <li><b>Click Install…, then enter your password.</b>
+    <figure><img src="img/mac-profile-review.png" alt="Profile review with Install highlighted">
+      <figcaption>Install…, then Install again if asked, then your password.</figcaption></figure></li>
+  <li><b>Done when it's listed under Device.</b>
+    <p>The panel's <i>Chrome lock</i> light turns green within a few seconds. Quit Chrome fully
+      (<b>⌘Q</b>) and reopen it.</p>
+    <figure><img src="img/mac-profile-installed.png" alt="Portcullis listed under Device">
+      <figcaption>Installed.</figcaption></figure></li>
+  <li><b>Check it (optional).</b>
+    <p>In Chrome, go to <code>chrome://policy</code>. Every row should say <b>OK</b>.</p>
+    <figure><img src="img/chrome-policy.png" alt="Chrome policy page with all statuses OK">
+      <figcaption>The block list value is blurred here; yours will show the sites.</figcaption></figure></li>
+</ol>
+
+<!-- ============================================================== Windows -->
+<h2 id="windows">Install on Windows</h2>
+<p class="lead">Not yet tested on a real Windows PC. If anything goes wrong, the removal steps below put everything
+  back, and your hosts file is backed up first.</p>
+<ol class="steps">
+  <li><b>Extract the zip somewhere permanent.</b>
+    <p>Right-click <code>Portcullis-Windows.zip</code> → <b>Extract All…</b>. Put it in Documents — the panel runs
+      from that folder, so don't leave it in Downloads.</p>
+    <figure><img src="img/win-extract.png" alt="Extract dialog with destination and Extract highlighted">
+      <figcaption><span class="tag">Illustration</span>Choose Documents, then Extract.</figcaption></figure></li>
+  <li><b>Double-click <code>Portcullis.cmd</code>. Windows will warn you.</b>
+    <p>Windows shows this for anything not from a registered publisher. Click <b>More info</b>…</p>
+    <figure><img src="img/win-smartscreen-1.png" alt="Windows protected your PC, More info highlighted">
+      <figcaption><span class="tag">Illustration</span>Click More info.</figcaption></figure>
+    <p>…then <b>Run anyway</b>.</p>
+    <figure><img src="img/win-smartscreen-2.png" alt="Windows protected your PC, Run anyway highlighted">
+      <figcaption><span class="tag">Illustration</span>Click Run anyway.</figcaption></figure></li>
+  <li><b>Press Turn on, and say Yes.</b>
+    <p>The panel opens in your browser. Press <b>Turn on</b>. Windows asks if PowerShell may make changes — that's
+      Portcullis writing the block. Click <b>Yes</b>. If you don't see the box, it's flashing in the taskbar.</p>
+    <figure class="small"><img src="img/win-uac.png" alt="User Account Control prompt with Yes highlighted">
+      <figcaption><span class="tag">Illustration</span>Click Yes.</figcaption></figure>
+    <div class="note ok">That's everything on Windows: the block list, the watchdog, and the Chrome and Edge lock
+      all go on together. Restart Chrome and Edge fully. They'll now say they're "managed by your organization" —
+      that's Portcullis, and it's expected. To check, visit <code>chrome://policy</code> or
+      <code>edge://policy</code>; every row should say OK.</div></li>
+</ol>
+
+<!-- ================================================================ phone -->
+<h2 id="phone">Your phone</h2>
+<p>The computer app can't reach your phone. On a phone, the block comes from <b>NextDNS</b>, a free service that
+  filters websites for every app, on Wi-Fi and mobile data. Free covers 300,000 lookups a month — plenty for one
+  phone.</p>
+<div class="note"><b>Use your own NextDNS account.</b> Never someone else's ID — whoever owns the account can see
+  every site the phone looks up.</div>
+<ol class="steps">
+  <li><b>Make a NextDNS account.</b>
+    <p>On any computer, go to <a href="https://nextdns.io">nextdns.io</a> and click <b>Try it now</b>, then sign
+      up so your settings are saved.</p>
+    <figure><img src="img/nextdns-home.png" alt="NextDNS homepage with Try it now highlighted">
+      <figcaption>Try it now, then create an account.</figcaption></figure></li>
+  <li><b>Turn on the porn filter.</b>
+    <p>Open <b>Parental Control</b>. Under <b>Categories</b>, click <b>Add a category</b> and choose <b>Porn</b>.
+      Add any sites or apps you want gone with <b>Add a website, app or game</b> — X is shown here as an
+      example.</p>
+    <figure><img src="img/nextdns-parental.png" alt="NextDNS Parental Control with Porn category on">
+      <figcaption>Parental Control → Categories → Porn. Not the Privacy tab — that's only ads and trackers.</figcaption></figure></li>
+  <li><b>Now follow the steps for your phone:</b> <a href="#android">Android</a> or <a href="#iphone">iPhone</a>.</li>
+</ol>
+
+<h3 id="android">Android (Pixel, Samsung and others)</h3>
+<ol class="steps">
+  <li><b>Find your NextDNS address.</b>
+    <p>In NextDNS, open <b>Setup</b>, scroll to <b>Setup Guide</b> and choose <b>Android</b>. It shows the address
+      to type in — it ends in <code>.dns.nextdns.io</code> and starts with your own ID.</p>
+    <figure><img src="img/nextdns-android.png" alt="NextDNS Android instructions with the address highlighted">
+      <figcaption>Your ID goes where it says <i>your-id</i>.</figcaption></figure></li>
+  <li><b>On the phone: Settings → Network &amp; internet → Private DNS.</b>
+    <p>On some phones it's under <i>Connections → More connection settings</i> (Samsung) or <i>Advanced</i>.
+      Searching Settings for "Private DNS" always finds it.</p>
+    <figure class="phone"><img src="img/android-network.png" alt="Network and internet settings with Private DNS highlighted">
+      <figcaption><span class="tag">Illustration</span>Tap Private DNS.</figcaption></figure></li>
+  <li><b>Choose the hostname option, type your address, Save.</b>
+    <figure class="phone"><img src="img/android-private-dns.png" alt="Private DNS dialog with hostname typed in">
+      <figcaption><span class="tag">Illustration</span>Private DNS provider hostname → your address → Save.</figcaption></figure>
+    <div class="note ok">Back in NextDNS, the Setup page now says "This device is using NextDNS" when you open it
+      on the phone.</div></li>
+  <li><b>Optional: make it harder to switch off.</b>
+    <p>Anyone can switch Private DNS back in Settings, so this is a speed bump, not a lock. For an extra hurdle,
+      <b>AppBlock</b> (free, Play Store) can block other apps and websites, and its <i>Strict Mode</i> stops those
+      blocks being changed — or AppBlock being uninstalled — until a time you choose. Give it the device-admin
+      permission when it asks; that's the part that stops the uninstall. Its screens change between versions, so
+      follow the app's own prompts.</p></li>
+</ol>
+
+<h3 id="iphone">iPhone</h3>
+<ol class="steps">
+  <li><b>On the iPhone, in Safari, go to <a href="https://apple.nextdns.io">apple.nextdns.io</a>.</b>
+    <p>Pick your profile, give the phone a name, and tap <b>Download</b>. (Use Safari — other browsers can't
+      install profiles.)</p>
+    <figure><img src="img/nextdns-apple.png" alt="apple.nextdns.io with Profile, Device name and Download highlighted">
+      <figcaption>Shown on a computer; it looks the same on the phone.</figcaption></figure></li>
+  <li><b>Allow the download, then Close.</b>
+    <figure><img src="img/ios-profile-downloaded.png" alt="Two iPhone alerts: Allow, then Close">
+      <figcaption><span class="tag">Illustration</span>Allow, then Close.</figcaption></figure></li>
+  <li><b>Open Settings and tap <i>Profile Downloaded</i>.</b>
+    <p>It's near the top, under your name. If it's not there, it's in <b>General → VPN &amp; Device
+      Management</b>.</p>
+    <figure class="phone"><img src="img/ios-settings.png" alt="Settings with Profile Downloaded highlighted">
+      <figcaption><span class="tag">Illustration</span>Tap Profile Downloaded.</figcaption></figure></li>
+  <li><b>Tap Install, enter your passcode, and Install again.</b>
+    <figure class="phone"><img src="img/ios-install.png" alt="Install Profile screen with Install highlighted">
+      <figcaption><span class="tag">Illustration</span>Install (top right).</figcaption></figure></li>
+  <li><b>Turn off iCloud Private Relay, if you have it.</b>
+    <p><b>Settings → your name → iCloud → Private Relay</b> → off. Private Relay sends Safari's lookups around
+      NextDNS. If you don't pay for iCloud+, you won't have it and can skip this.</p>
+    <figure class="phone"><img src="img/ios-private-relay.png" alt="Private Relay switched off">
+      <figcaption><span class="tag">Illustration</span>Off.</figcaption></figure></li>
+  <li><b>Optional: make it harder to switch off.</b>
+    <p>On a personal iPhone, a profile can always be deleted from Settings — there's no switch that prevents
+      it. Screen Time can add friction elsewhere: under <b>Screen Time → Content &amp; Privacy Restrictions</b>
+      you can limit adult websites in Safari, with a Screen Time passcode someone else keeps.</p></li>
+</ol>
+
+<!-- ============================================================== removal -->
+<h2 id="remove">Removing it</h2>
+<p>Deliberately not a button, and deliberately slow: you ask once, wait 48 hours, then confirm. It's written down
+  because a tool that hides its own exit isn't trustworthy. If one site is blocked by mistake, take just that site
+  off in the panel instead.</p>
+
+<h3>Mac</h3>
+<ol class="steps">
+  <li><b>Open Terminal</b> (Applications → Utilities) and paste:
+    <pre><code>sudo bash /Applications/Portcullis.app/Contents/Resources/mac/uninstall-hosts.sh</code></pre>
+    <p>Enter your password (nothing shows while you type — that's normal).</p>
+    <figure><img src="img/mac-terminal-remove.png" alt="Terminal showing the removal request">
+      <figcaption><span class="tag">Illustration</span>The first run only files the request.</figcaption></figure></li>
+  <li><b>48 hours later, run the same line again.</b> That removes the block and the watchdog. Changed your mind
+    before then? Add <code>--cancel</code> to the end.</li>
+  <li><b>Remove the Chrome lock</b> in System Settings → General → Device Management → Portcullis → <b>−</b>.</li>
+</ol>
+
+<h3>Windows</h3>
+<ol class="steps">
+  <li><b>Open PowerShell as administrator:</b> right-click the Start button → <b>Terminal (Admin)</b> → Yes.</li>
+  <li><b>Go to the Portcullis folder and run the remover:</b>
+    <pre><code>cd $HOME\Documents\Portcullis-Windows
+powershell -ExecutionPolicy Bypass -File .\app\windows\uninstall.ps1</code></pre>
+    <figure><img src="img/win-powershell-remove.png" alt="PowerShell showing the removal request">
+      <figcaption><span class="tag">Illustration</span>The first run only files the request.</figcaption></figure></li>
+  <li><b>48 hours later, run the second line again.</b> That removes the block, the watchdog and the Chrome and Edge
+    lock. Changed your mind? Add <code>-Cancel</code> to the end.</li>
+</ol>
+
+<h3>Phone</h3>
+<p>Android: set Private DNS back to <b>Automatic</b>. iPhone: Settings → General → VPN &amp; Device Management →
+  NextDNS → <b>Remove Profile</b>.</p>
+
+</div>
+</body>
+</html>
