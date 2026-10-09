@@ -146,11 +146,11 @@ def _():
     <div style="font-size:15px;color:#1a4fa0;margin-bottom:14px">Select a Destination and Extract Files</div>
     <div style="margin-bottom:6px">Files will be extracted to this folder:</div>
     <div style="display:flex;gap:8px;margin-bottom:12px">
-      <div data-hl="1" data-r="6" style="flex:1;border:1px solid #9aa4ae;border-radius:3px;padding:5px 7px">C:\\Users\\you\\Documents\\Portcullis-Windows</div>
+      <div style="flex:1;border:1px solid #9aa4ae;border-radius:3px;padding:5px 7px">C:\\Users\\you\\Downloads\\Portcullis-Windows</div>
       <div style="border:1px solid #c5ccd3;border-radius:4px;padding:5px 12px;background:#f5f6f7">Browse...</div></div>
     <div>☑ Show extracted files when complete</div></div>
   <div style="position:absolute;right:16px;bottom:14px;display:flex;gap:8px">
-    <div data-hl="2" data-r="6" style="background:#0067c0;color:#fff;border-radius:4px;padding:6px 22px">Extract</div>
+    <div data-hl="1" data-r="6" style="background:#0067c0;color:#fff;border-radius:4px;padding:6px 22px">Extract</div>
     <div style="border:1px solid #c5ccd3;border-radius:4px;padding:6px 18px">Cancel</div></div></div>
 """
 

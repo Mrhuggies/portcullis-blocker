@@ -50,11 +50,20 @@
   .note.bad{border-color:var(--danger);background:#1e1416}
   footer{border-top:1px solid var(--line);margin-top:70px;padding:28px 0 60px;color:var(--muted);font-size:14px}
   .steps{counter-reset:s;list-style:none;padding:0}
+  details.byhand{background:#14171d;border:1px solid #242934;border-radius:10px;padding:4px 18px;margin:18px 0}
+  details.byhand>summary{cursor:pointer;padding:12px 0;color:#9aa3b2;font-weight:600}
+  details.byhand[open]>summary{color:#e8eaef}
+  kbd{font:600 12.5px ui-monospace,Menlo,monospace;background:#22262f;border:1px solid #343a46;
+      border-bottom-width:2px;border-radius:5px;padding:1px 6px;white-space:nowrap}
   .steps>li{counter-increment:s;position:relative;padding-left:42px;margin:20px 0}
   .steps>li::before{content:counter(s);position:absolute;left:0;top:1px;width:27px;height:27px;
     border-radius:50%;background:var(--accent);color:#14161a;font-weight:700;font-size:14px;
     display:grid;place-items:center}
   svg{max-width:100%;height:auto}
+  pre{position:relative}
+  .copy{position:absolute;top:8px;right:8px;font:600 12px system-ui,sans-serif;background:#d9a441;color:#14161a;
+        border:0;border-radius:6px;padding:5px 11px;cursor:pointer}
+  .copy.done{background:#6fae7e}
 </style>
 </head>
 <body>
@@ -158,49 +167,109 @@
   stop after one layer and still be better off than before.</p>
 
 <h3>macOS</h3>
-<p><strong>The easy way:</strong> <a href="https://github.com/Mrhuggies/portcullis-blocker/releases/latest/download/Portcullis-Mac.zip">download Portcullis for Mac</a>, unzip it, drag
-  <code>Portcullis</code> into Applications and open it. The first time,
-  macOS will refuse because it isn't from the App Store: go to System&nbsp;Settings →
-  Privacy&nbsp;&amp;&nbsp;Security, scroll down and click <em>Open Anyway</em>. Then press
-  <em>Turn on</em>. The app installs the block list and watchdog, and lets you add your own
-  sites and block bypass tools like Tor. The steps below do the same thing by hand.</p>
+<p>Use the app. It does everything below for you, and the <a href="guide.html#mac">setup guide</a>
+  has a picture of every screen.</p>
 <ol class="steps">
-  <li><strong><a href="https://github.com/Mrhuggies/portcullis-blocker/archive/refs/heads/main.zip">Download the project</a> and unzip it</strong>,
-      then open Terminal in that folder.</li>
-  <li><strong>Block it everywhere:</strong><pre><code>sudo bash mac/install-hosts.sh</code></pre>
-      Covers Safari, Chrome, Firefox and every app. Asks for your Mac password — nothing appears
-      while you type it, which is normal.</li>
-  <li><strong>Lock Chrome's settings:</strong> double-click <code>mac/Portcullis.mobileconfig</code>,
-      then approve it in System&nbsp;Settings → General → Device&nbsp;Management.</li>
-  <li><strong>Turn on the watchdog</strong> so the block repairs itself:
-      <pre><code>sudo bash mac/install-guard.sh</code></pre></li>
-  <li><strong>Check it:</strong> <code>sudo bash mac/test-guard.sh</code> removes the block and
-      shows you it coming back. If the watchdog fails, the test puts it back itself.</li>
+  <li><strong><a href="https://github.com/Mrhuggies/portcullis-blocker/releases/latest/download/Portcullis-Mac.zip">Download Portcullis for Mac</a>.</strong> It goes into your
+      <em>Downloads</em> folder. Open Downloads (in Finder, or the arrow at the top right of your
+      browser) and double-click <code>Portcullis-Mac.zip</code>. A <em>Portcullis</em> icon appears.</li>
+  <li><strong>Drag the Portcullis icon into Applications</strong> (on the left of the Finder window),
+      then double-click it in Applications.</li>
+  <li><strong>macOS will say it can't open it.</strong> Click <em>Done</em> — not <em>Move to Bin</em>.
+      Then click the Apple logo at the top left of the screen → <em>System Settings</em> →
+      <em>Privacy &amp; Security</em>, scroll to the very bottom, click <em>Open Anyway</em> and type
+      your Mac password. You only do this once.</li>
+  <li><strong>A page opens in your browser. Click <em>Turn on</em></strong> and type your Mac
+      password when asked. That's the block on, for every browser and app.</li>
+  <li><strong>Click the <em>Set up</em> tab</strong> and follow it to lock Chrome and set up your phone.</li>
 </ol>
+
+<details class="byhand"><summary>Prefer not to use the app? Do it by hand instead</summary>
+<p>This does the same as the app using Terminal, a built-in Mac program where you type commands.
+  You'll copy each grey box and paste it in — you don't need to understand the commands.</p>
+<ol class="steps">
+  <li><strong><a href="https://github.com/Mrhuggies/portcullis-blocker/archive/refs/heads/main.zip">Download the project</a>.</strong> Open your <em>Downloads</em>
+      folder. If you see <code>portcullis-blocker-main.zip</code>, double-click it. You should now have
+      a folder called <code>portcullis-blocker-main</code> in Downloads.</li>
+  <li><strong>Open Terminal.</strong> Hold <kbd>⌘ Command</kbd> and press <kbd>Space</kbd>, type
+      <code>Terminal</code>, and press <kbd>Return</kbd>. A window with a line of text and a blinking
+      cursor opens.</li>
+  <li><strong>Point Terminal at the folder.</strong> Click <em>Copy</em> on the grey box below, click in
+      the Terminal window, paste with <kbd>⌘ Command</kbd> + <kbd>V</kbd>, and press <kbd>Return</kbd>:
+      <pre><code>cd ~/Downloads/portcullis-blocker-main</code></pre>
+      Nothing seems to happen — that's right. If it says <em>No such file or directory</em>, type
+      <code>cd</code> and a space, drag the <code>portcullis-blocker-main</code> folder from Finder onto
+      the Terminal window, and press <kbd>Return</kbd>.</li>
+  <li><strong>Block it everywhere.</strong> Copy this, paste it into Terminal the same way, and press
+      <kbd>Return</kbd>:
+      <pre><code>sudo bash mac/install-hosts.sh</code></pre>
+      It shows <em>Password:</em> — type the password you use to log in to your Mac and press
+      <kbd>Return</kbd>. <strong>Nothing appears while you type — not even dots.</strong> That's normal;
+      it's still typing. When it finishes you'll see a line saying the block is in place.</li>
+  <li><strong>Turn on the watchdog</strong>, which puts the block back if it's removed. Copy, paste,
+      press <kbd>Return</kbd>, and type your password again if asked:
+      <pre><code>sudo bash mac/install-guard.sh</code></pre></li>
+  <li><strong>Lock Chrome.</strong> In Finder, open <em>Downloads</em> → <em>portcullis-blocker-main</em>
+      → <em>mac</em>, and double-click <code>Portcullis.mobileconfig</code>. Click <em>OK</em>. Then
+      Apple logo (top left) → <em>System Settings</em> → <em>General</em> → <em>Device Management</em>,
+      double-click <em>Portcullis</em>, click <em>Install</em> and enter your password.
+      <a href="guide.html#chrome-mac">Pictures of each screen</a>.</li>
+  <li><strong>Check it works</strong> (optional). Copy, paste, press <kbd>Return</kbd>, and watch it remove
+      the block and the watchdog put it back:
+      <pre><code>sudo bash mac/test-guard.sh</code></pre>
+      You can close Terminal afterwards.</li>
+</ol>
+</details>
 
 <h3>Windows</h3>
 <div class="note">
-  <strong>Status:</strong> the file handling is covered by automated tests, and every script is
-  checked by Microsoft's own PowerShell parser; the app's rules and its security checks are tested
-  the same way as the Mac version's. The Windows-only parts — the permission prompt, registry
-  policy and the scheduled task — have not yet been run on a real Windows machine. Your hosts file is backed up
-  before anything is written, and <code>uninstall.ps1</code> restores it.
+  <strong>Not yet tested on a real Windows PC.</strong> The parts that can be tested automatically
+  are, and your settings are backed up before anything changes — but if you try it, it's a first
+  version. Everything it does can be undone (see <a href="#remove">removing it</a>).
 </div>
-<p><strong>The easy way:</strong> <a href="https://github.com/Mrhuggies/portcullis-blocker/releases/latest/download/Portcullis-Windows.zip">download Portcullis for Windows</a>, unzip it somewhere
-  permanent such as Documents, and double-click <code>Portcullis.cmd</code>. If Windows says it
-  protected your PC, choose <em>More info → Run anyway</em>. Press <em>Turn on</em> and say yes to
-  the permission prompt. The app sets up the block list, the watchdog and the Chrome/Edge lock in
-  one go, and lets you add your own sites. Or by hand:</p>
+<p>Use the app. The <a href="guide.html#windows">setup guide</a> has a picture of every screen.</p>
 <ol class="steps">
-  <li><strong><a href="https://github.com/Mrhuggies/portcullis-blocker/archive/refs/heads/main.zip">Download the project</a> and unzip it</strong>, then
-      open PowerShell <em>as Administrator</em> in that folder.</li>
-  <li><strong>Block it everywhere:</strong><pre><code>powershell -ExecutionPolicy Bypass -File .\windows\install.ps1</code></pre>
-      Writes the hosts file and locks Chrome and Edge policy, including turning off the browsers'
-      own secure DNS so they can't resolve around the block.</li>
-  <li><strong>Turn on the watchdog:</strong><pre><code>powershell -ExecutionPolicy Bypass -File .\windows\install-guard.ps1</code></pre>
-      Registers a task that checks every five minutes and repairs the block.</li>
-  <li><strong>Restart Chrome and Edge completely</strong> and try a blocked site.</li>
+  <li><strong><a href="https://github.com/Mrhuggies/portcullis-blocker/releases/latest/download/Portcullis-Windows.zip">Download Portcullis for Windows</a>.</strong> It goes into your
+      <em>Downloads</em> folder.</li>
+  <li><strong>Unzip it and move it to Documents.</strong> Open <em>File Explorer</em> (the yellow folder
+      on the taskbar) → <em>Downloads</em>. Right-click <code>Portcullis-Windows.zip</code> →
+      <em>Extract All…</em> → <em>Extract</em>. A new <code>Portcullis-Windows</code> folder appears —
+      drag it onto <em>Documents</em> in the list on the left. Keep it there; the app runs from it.</li>
+  <li><strong>Double-click <code>Portcullis.cmd</code></strong> in that folder. If a blue box says
+      <em>Windows protected your PC</em>, click <em>More info</em>, then <em>Run anyway</em>.</li>
+  <li><strong>A page opens in your browser. Click <em>Turn on</em></strong>, and click <em>Yes</em>
+      when Windows asks if it may make changes. If you don't see that box, it's flashing in the
+      taskbar at the bottom of the screen.</li>
+  <li><strong>Close Chrome and Edge completely and reopen them.</strong> Then click the <em>Set up</em>
+      tab for your phone.</li>
 </ol>
+
+<details class="byhand"><summary>Prefer not to use the app? Do it by hand instead</summary>
+<p>This uses PowerShell, a built-in Windows program where you type commands. You'll copy each grey
+  box and paste it in — you don't need to understand the commands.</p>
+<ol class="steps">
+  <li><strong><a href="https://github.com/Mrhuggies/portcullis-blocker/archive/refs/heads/main.zip">Download the project</a>.</strong> Open <em>File Explorer</em> →
+      <em>Downloads</em>, right-click <code>portcullis-blocker-main.zip</code> → <em>Extract All…</em> →
+      <em>Extract</em>.</li>
+  <li><strong>Open PowerShell as administrator.</strong> Click the <em>Start</em> button, type
+      <code>PowerShell</code>, and on the right click <em>Run as administrator</em>. Click <em>Yes</em>.
+      A dark window with a blinking cursor opens.</li>
+  <li><strong>Point PowerShell at the folder.</strong> Click <em>Copy</em> on the grey box below, then
+      <strong>right-click</strong> inside the PowerShell window to paste, and press <kbd>Enter</kbd>:
+      <pre><code>cd $HOME\Downloads\portcullis-blocker-main\portcullis-blocker-main</code></pre>
+      If it says it <em>cannot find path</em>, type <code>cd</code> and a space, drag the
+      <code>portcullis-blocker-main</code> folder that contains the <code>windows</code> folder onto the
+      PowerShell window, and press <kbd>Enter</kbd>.</li>
+  <li><strong>Block it everywhere.</strong> Copy this, right-click in PowerShell to paste, and press
+      <kbd>Enter</kbd>:
+      <pre><code>powershell -ExecutionPolicy Bypass -File .\windows\install.ps1</code></pre>
+      It blocks the sites in every browser and app, and stops Chrome and Edge getting around it.</li>
+  <li><strong>Turn on the watchdog</strong>, which puts the block back if it's removed. Copy, paste and
+      press <kbd>Enter</kbd>:
+      <pre><code>powershell -ExecutionPolicy Bypass -File .\windows\install-guard.ps1</code></pre></li>
+  <li><strong>Close Chrome and Edge completely and reopen them.</strong> You can close PowerShell.</li>
+</ol>
+</details>
 
 <h3>Phone — both platforms</h3>
 <p>DNS filtering covers every app on the phone, on wi-fi and on mobile data. It's free.</p>
@@ -268,19 +337,38 @@
   genuine trade and you should make it knowingly. Skip that layer if you'd rather not; the rest
   still works.</p>
 
-<h2>How to remove it</h2>
+<h2 id="remove">How to remove it</h2>
 <p>Documented on purpose. A tool that hides its own exit isn't trustworthy, and you'll
   legitimately need this one day — a new laptop, a work machine, a changed mind.</p>
-<pre><code>macOS:    sudo bash mac/uninstall-hosts.sh     # files the request
-          sudo bash mac/uninstall-hosts.sh     # again after 48 hours
-Windows:  powershell -ExecutionPolicy Bypass -File .\windows\uninstall.ps1       # same two steps
-          powershell -ExecutionPolicy Bypass -File .\app\windows\uninstall.ps1   # (from the app's folder)</code></pre>
-<p>The first run doesn't remove anything — it starts a 48-hour clock and tells you when you can
-  come back. <code>--cancel</code> (or <code>-Cancel</code>) calls it off. Browser policy is removed
-  separately in System&nbsp;Settings or the registry, and the phone layers come off in their own apps.</p>
-<p class="small muted">If a site you need is blocked by mistake, don't remove everything —
-  <code>sudo bash mac/allow-site.sh example.com</code> unblocks exactly one. Instantly for ordinary
-  false positives; after an hour for anything on the adult list.</p>
+<p>It's deliberately slow: you ask once, wait 48 hours, then do the same thing again to confirm.
+  The <a href="guide.html#remove">setup guide</a> shows every screen.</p>
+<ol class="steps">
+  <li><strong>Mac:</strong> open Terminal (hold <kbd>⌘ Command</kbd>, press <kbd>Space</kbd>, type
+      <code>Terminal</code>, press <kbd>Return</kbd>). Click <em>Copy</em> below, paste into Terminal
+      (<kbd>⌘ Command</kbd> + <kbd>V</kbd>), press <kbd>Return</kbd>, and type your Mac password — nothing shows while you type, which is normal:
+      <pre><code>sudo bash /Applications/Portcullis.app/Contents/Resources/mac/uninstall-hosts.sh</code></pre>
+      It replies that removal has been requested and tells you when you can come back. Do exactly the
+      same 48 hours later to finish. Changed your mind? Do it with <code>--cancel</code> on the end.
+      <span class="muted">(Set up by hand instead of with the app? Use
+      <code>sudo bash mac/uninstall-hosts.sh</code> from the project folder.)</span>
+      <br>The Chrome lock comes off separately: Apple logo (top left) → <em>System Settings</em> →
+      <em>General</em> → <em>Device Management</em> → click <em>Portcullis</em> → the <em>−</em> button.</li>
+  <li><strong>Windows:</strong> click <em>Start</em>, type <code>PowerShell</code>, click <em>Run as
+      administrator</em>, then <em>Yes</em>. Click <em>Copy</em> below, right-click in PowerShell to paste, and
+      press <kbd>Enter</kbd>:
+      <pre><code>cd $HOME\Documents\Portcullis-Windows
+powershell -ExecutionPolicy Bypass -File .\app\windows\uninstall.ps1</code></pre>
+      Do the same 48 hours later to finish — this also removes the Chrome and Edge lock. Changed your
+      mind? Add <code>-Cancel</code> to the end of the second line.
+      <span class="muted">(Set up by hand? From the project folder, use
+      <code>.\windows\uninstall.ps1</code> in the second line instead.)</span></li>
+  <li><strong>Phone:</strong> on Android, set <em>Private DNS</em> back to <em>Automatic</em>. On iPhone,
+      <em>Settings</em> → <em>General</em> → <em>VPN &amp; Device Management</em> → <em>NextDNS</em> →
+      <em>Remove Profile</em>.</li>
+</ol>
+<p class="small muted">If one site you need is blocked by mistake, don't remove everything. Take it off
+  your list in the app — or, if it's on the built-in adult list, <code>sudo bash mac/allow-site.sh
+  example.com</code> from the project folder unblocks just that one after an hour.</p>
 
 <h2>What it can't reach</h2>
 <ul>
@@ -312,5 +400,21 @@ Windows:  powershell -ExecutionPolicy Bypass -File .\windows\uninstall.ps1      
   </div>
 </footer>
 
+<script>
+// A Copy button on every command box, so nobody has to select text by hand.
+document.querySelectorAll("pre").forEach(pre => {
+  const b = document.createElement("button");
+  b.className = "copy"; b.type = "button"; b.textContent = "Copy";
+  b.onclick = async () => {
+    const text = pre.querySelector("code").innerText.trim();
+    try { await navigator.clipboard.writeText(text); }
+    catch { const r = document.createRange(); r.selectNodeContents(pre.querySelector("code"));
+            getSelection().removeAllRanges(); getSelection().addRange(r); document.execCommand("copy"); }
+    b.textContent = "Copied"; b.classList.add("done");
+    setTimeout(() => { b.textContent = "Copy"; b.classList.remove("done"); }, 2000);
+  };
+  pre.appendChild(b);
+});
+</script>
 </body>
 </html>

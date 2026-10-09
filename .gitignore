@@ -9,3 +9,5 @@ guide/raw/
 reddit-post.md
 .DS_Store
 __pycache__/
+# The explainer video shows a personal browser policy in one frame.
+video/

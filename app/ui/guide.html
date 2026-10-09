@@ -41,6 +41,10 @@
   .ok{border-left-color:var(--ok);background:#131b15;color:#cfe0d3}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   @media (max-width:600px){.two{grid-template-columns:1fr}}
+  pre{position:relative}
+  .copy{position:absolute;top:8px;right:8px;font:600 12px system-ui,sans-serif;background:#d9a441;color:#14161a;
+        border:0;border-radius:6px;padding:5px 11px;cursor:pointer}
+  .copy.done{background:#6fae7e}
 </style>
 </head>
 <body>
@@ -123,10 +127,12 @@
   back, and your hosts file is backed up first.</p>
 <ol class="steps">
   <li><b>Extract the zip somewhere permanent.</b>
-    <p>Right-click <code>Portcullis-Windows.zip</code> → <b>Extract All…</b>. Put it in Documents — the panel runs
-      from that folder, so don't leave it in Downloads.</p>
-    <figure><img src="img/win-extract.png" alt="Extract dialog with destination and Extract highlighted">
-      <figcaption><span class="tag">Illustration</span>Choose Documents, then Extract.</figcaption></figure></li>
+    <p>In File Explorer, open <b>Downloads</b>, right-click <code>Portcullis-Windows.zip</code> →
+      <b>Extract All…</b> → <b>Extract</b>.</p>
+    <figure><img src="img/win-extract.png" alt="Extract dialog with Extract highlighted">
+      <figcaption><span class="tag">Illustration</span>Leave the folder as it is and click Extract.</figcaption></figure>
+    <p>A new <code>Portcullis-Windows</code> folder appears. <b>Drag it onto Documents</b> in the list on
+      the left and keep it there — the panel runs from that folder.</p></li>
   <li><b>Double-click <code>Portcullis.cmd</code>. Windows will warn you.</b>
     <p>Windows shows this for anything not from a registered publisher. Click <b>More info</b>…</p>
     <figure><img src="img/win-smartscreen-1.png" alt="Windows protected your PC, More info highlighted">
@@ -256,5 +262,21 @@ powershell -ExecutionPolicy Bypass -File .\app\windows\uninstall.ps1</code></pre
   NextDNS → <b>Remove Profile</b>.</p>
 
 </div>
+<script>
+// A Copy button on every command box, so nobody has to select text by hand.
+document.querySelectorAll("pre").forEach(pre => {
+  const b = document.createElement("button");
+  b.className = "copy"; b.type = "button"; b.textContent = "Copy";
+  b.onclick = async () => {
+    const text = pre.querySelector("code").innerText.trim();
+    try { await navigator.clipboard.writeText(text); }
+    catch { const r = document.createRange(); r.selectNodeContents(pre.querySelector("code"));
+            getSelection().removeAllRanges(); getSelection().addRange(r); document.execCommand("copy"); }
+    b.textContent = "Copied"; b.classList.add("done");
+    setTimeout(() => { b.textContent = "Copy"; b.classList.remove("done"); }, 2000);
+  };
+  pre.appendChild(b);
+});
+</script>
 </body>
 </html>
